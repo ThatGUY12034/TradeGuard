@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TradeGuard — Prop Firm Risk Calculator</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet"/>
+
+<!-- Styles -->
+<link rel="stylesheet" href="styles.css"/>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+</head>
+<body>
+
+<!-- ─── LOADER ─────────────────────────────── -->
+<div id="loader">
+  <div class="loader-logo">TradeGuard</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-text">Initializing Systems</div>
+</div>
+
+<!-- ─── CURSOR ─────────────────────────────── -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ─── THREE.JS CANVAS ─────────────────────── -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ─── RESULT POPUP ─────────────────────────
+     Opens automatically after every calculation
+─────────────────────────────────────────────── -->
+<div class="popup-overlay" id="resultPopup">
+  <div class="popup-box">
+    <button class="popup-close" onclick="closePopup()">✕</button>
+    <div class="popup-title">YOUR POSITION</div>
+    <div class="popup-subtitle">Required lot size for this trade</div>
+
+    <!-- Big lot number -->
+    <div class="popup-main">
+      <div class="popup-lot-label">⚡ Lot Size to Trade</div>
+      <div class="popup-lot-value" id="popup-lot-val">—</div>
+      <div class="popup-lot-unit"  id="popup-lot-unit">LOTS</div>
+    </div>
+
+    <!-- Breakdown grid -->
+    <div class="popup-breakdown">
+      <div class="popup-stat">
+        <div class="popup-stat-label">$ at Risk</div>
+        <div class="popup-stat-val" id="popup-risk-usd">—</div>
+      </div>
+      <div class="popup-stat">
+        <div class="popup-stat-label">$ Profit Target</div>
+        <div class="popup-stat-val good" id="popup-profit-usd">—</div>
+      </div>
+      <div class="popup-stat">
+        <div class="popup-stat-label">Risk : Reward</div>
+        <div class="popup-stat-val" id="popup-rr">—</div>
+      </div>
+      <div class="popup-stat">
+        <div class="popup-stat-label">SL Distance</div>
+        <div class="popup-stat-val" id="popup-sl-pips">—</div>
+      </div>
+    </div>
+
+    <!-- Rule alert -->
+    <div class="popup-rule-alert pass" id="popup-rule-alert">Checking rules…</div>
+
+    <!-- Formula explanation -->
+    <div class="popup-formula" id="popup-formula">
+      Formula: Risk ($) ÷ (SL distance × contract size) = lot size
+    </div>
+
+    <!-- Actions -->
+    <div class="popup-actions">
+      <button class="mag-btn mag-btn-primary"   onclick="logThisTrade(); closePopup();">+ Log Trade</button>
+      <button class="mag-btn mag-btn-secondary" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MOBILE NAV ───────────────────────────── -->
+<div class="nav-mobile" id="mobileNav">
+  <a href="#calculator" onclick="closeMobileNav()">Calculator</a>
+  <a href="#features"   onclick="closeMobileNav()">Features</a>
+  <a href="#dashboard"  onclick="closeMobileNav()">Dashboard</a>
+  <a href="#testimonials" onclick="closeMobileNav()">Reviews</a>
+</div>
+
+<!-- ─── NAVBAR ──────────────────────────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">TradeGuard</a>
+  <ul class="nav-links">
+    <li><a href="#calculator">Calculator</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme"></button>
+    <div class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-badge"><span class="badge-dot"></span> The5ers $20K Bootcamp Ready</div>
+  <h1 class="hero-h1">
+    <span class="line"><span>TRADE</span></span>
+    <span class="line"><span class="grad-text">SMARTER</span></span>
+    <span class="line"><span>WIN FUNDED</span></span>
+  </h1>
+  <p class="hero-sub">The most advanced prop firm risk calculator. Powered by Groq AI. Enter your levels — get exact lot size instantly.</p>
+  <div class="hero-cta">
+    <a href="#calculator" class="mag-btn mag-btn-primary">Start Calculating</a>
+    <a href="#features"   class="mag-btn mag-btn-secondary">Explore Features</a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     STATS
+════════════════════════════════════════════ -->
+<section id="stats">
+  <div class="stat-item"><div class="stat-num" data-target="20">0</div><div class="stat-label">Account Size ($K)</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="6">0</div><div class="stat-label">Profit Target (%)</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="5">0</div><div class="stat-label">Max Drawdown (%)</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="2">0</div><div class="stat-label">Max Risk/Trade (%)</div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CALCULATOR
+════════════════════════════════════════════ -->
+<section id="calculator">
+  <div class="section-header">
+    <div class="section-tag">⚡ Core Tool</div>
+    <h2 class="section-h2">Risk <span class="grad-text">Calculator</span></h2>
+    <p class="section-sub">Enter your entry, stop loss and take profit prices. Correct lot size pops up instantly.</p>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- INPUT CARD -->
+    <div class="glass-card tilt-card" id="calcInputCard">
+      <div class="card-label">Trade Setup</div>
+
+      <div class="field">
+        <label>Pair / Instrument</label>
+        <input type="text" id="c-pair" placeholder="EURUSD, XAUUSD, BTC, US30…"/>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Account Size ($)</label>
+          <input type="number" id="c-account" value="20000"/>
+        </div>
+        <div class="field">
+          <label>Risk per Trade (%)</label>
+          <input type="number" id="c-risk" value="1" step="0.1" max="2"/>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Entry Price</label>
+          <input type="number" id="c-entry" placeholder="e.g. 2000.00" step="any"/>
+          <small>Your exact entry price</small>
+        </div>
+        <div class="field">
+          <label>Stop Loss Price</label>
+          <input type="number" id="c-sl-price" placeholder="e.g. 1990.00" step="any"/>
+          <small>Where you exit if wrong</small>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Take Profit Price</label>
+          <input type="number" id="c-tp-price" placeholder="e.g. 2020.00" step="any"/>
+          <small>Where you take profit</small>
+        </div>
+        <div class="field">
+          <label>Direction</label>
+          <select id="c-dir">
+            <option value="BUY">BUY / Long</option>
+            <option value="SELL">SELL / Short</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Trade Notes (optional)</label>
+        <input type="text" id="c-notes" placeholder="Setup description, session, confluence…"/>
+      </div>
+
+      <div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">
+        <button class="mag-btn mag-btn-primary"   onclick="doCalc()"       style="flex:1">⚡ Calculate &amp; Show Lots</button>
+        <button class="mag-btn mag-btn-secondary" onclick="resetCalc()">↺</button>
+        <button class="mag-btn mag-btn-secondary" onclick="logThisTrade()" style="flex:1">+ Log Trade</button>
+      </div>
+    </div>
+
+    <!-- RESULTS CARD -->
+    <div class="glass-card tilt-card" id="calcResultCard">
+      <div class="card-label">Position Size &amp; Risk</div>
+      <div class="res-grid">
+        <div class="res-box"><div class="res-label">Position Size</div><div class="res-val" id="r-lots">—</div><div class="res-sub">Lots / Units</div></div>
+        <div class="res-box"><div class="res-label">Risk : Reward</div><div class="res-val" id="r-rr">—</div><div class="res-sub">Ratio</div></div>
+        <div class="res-box"><div class="res-label">$ at Risk</div><div class="res-val" id="r-risk">—</div><div class="res-sub">Max Loss</div></div>
+        <div class="res-box"><div class="res-label">$ Profit Target</div><div class="res-val" id="r-profit">—</div><div class="res-sub">If TP Hit</div></div>
+        <div class="res-box">
+          <div class="res-label">SL Distance</div>
+          <div class="res-val" id="r-sl-dist" style="font-size:18px">—</div>
+          <div class="res-sub" id="r-sl-pips"></div>
+        </div>
+        <div class="res-box">
+          <div class="res-label">TP Distance</div>
+          <div class="res-val" id="r-tp-dist" style="font-size:18px">—</div>
+          <div class="res-sub" id="r-tp-pips"></div>
+        </div>
+      </div>
+
+      <div class="card-label" style="margin-top:8px;">The5ers Rule Check</div>
+      <div class="rule-list" id="ruleList">
+        <div class="rule-row" style="color:var(--text3)">⬜ &nbsp;Enter trade details and calculate</div>
+      </div>
+    </div>
+
+    <!-- AI PANEL -->
+    <div class="glass-card ai-panel">
+      <div class="card-label">✦ AI Analysis — Groq (Free)</div>
+      <div class="model-row">
+        <label>Model</label>
+        <select id="aiModel">
+          <optgroup label="🔥 Groq Free Models">
+            <option value="llama-3.3-70b-versatile">Llama 3.3 70B (Best)</option>
+            <option value="llama-3.1-8b-instant">Llama 3.1 8B (Fastest)</option>
+            <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+            <option value="gemma2-9b-it">Gemma 2 9B</option>
+          </optgroup>
+        </select>
+        <button class="mag-btn mag-btn-primary" onclick="runAI()" id="aiBtn" style="white-space:nowrap">✦ AI Analyze</button>
+      </div>
+      <div class="ai-output-wrap" id="aiOut">
+        <div class="ai-header"><span class="ai-dot"></span>Awaiting Trade Data</div>
+        <div class="ai-content" style="color:var(--text3);font-size:12px;">
+          Calculate a trade above, then click AI Analyze for a full professional evaluation — quality score, prop firm compliance, and recommendations.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /calc-grid -->
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FEATURES
+════════════════════════════════════════════ -->
+<section id="features">
+  <div class="features-inner">
+    <div class="section-header">
+      <div class="section-tag">🔥 What's Inside</div>
+      <h2 class="section-h2">Every Tool You <span class="grad-text">Need</span></h2>
+    </div>
+    <div class="features-grid">
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon blue">⚡</div>
+        <h3 class="feat-h3">Instant Lot Size</h3>
+        <p class="feat-p">Enter entry, SL, TP prices — get your exact lot size in a popup instantly. Works for Forex, Gold, Crypto &amp; Indices.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon purple">🤖</div>
+        <h3 class="feat-h3">Groq AI Evaluation</h3>
+        <p class="feat-p">Free AI analysis of every trade. Quality score, risk check, prop firm compliance, and specific recommendations.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon green">✅</div>
+        <h3 class="feat-h3">Rule Checker</h3>
+        <p class="feat-p">Auto-validates against The5ers $20K rules. Warns you before breaching the 2% limit or placing a bad direction trade.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon pink">📉</div>
+        <h3 class="feat-h3">Daily Tracker</h3>
+        <p class="feat-p">Track intraday P&amp;L vs your 5% daily limit. Color-coded warnings at 50%, 80%, and 100% of limit.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon orange">🎯</div>
+        <h3 class="feat-h3">Phase Progress</h3>
+        <p class="feat-p">Visual tracker for the 6% profit target across all 3 Bootcamp phases. Know exactly what you still need.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon cyan">📒</div>
+        <h3 class="feat-h3">Trade Journal</h3>
+        <p class="feat-p">Log, review, and export every trade. Stats: win rate, average RR, total risk. Persists between sessions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════════ -->
+<section id="dashboard">
+  <div class="dashboard-inner">
+    <div class="section-header">
+      <div class="section-tag">📊 Dashboard</div>
+      <h2 class="section-h2">Track Your <span class="grad-text">Challenge</span></h2>
+    </div>
+
+    <div class="dash-grid">
+
+      <!-- Daily Tracker Input -->
+      <div class="glass-card">
+        <div class="card-label">Daily P&amp;L Tracker</div>
+        <div class="field-row">
+          <div class="field"><label>Account ($)</label><input type="number" id="dl-acc" value="20000"/></div>
+          <div class="field"><label>Daily Limit (%)</label><input type="number" id="dl-lim" value="5"/></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Add P&amp;L ($)</label><input type="number" id="dl-amt" placeholder="-100 or +200"/></div>
+          <div class="field" style="display:flex;align-items:flex-end;gap:8px;">
+            <button class="mag-btn mag-btn-primary"   style="flex:1;padding:12px" onclick="addPnL()">Add</button>
+            <button class="mag-btn mag-btn-secondary" style="padding:12px"        onclick="resetPnL()">↺</button>
+          </div>
+        </div>
+        <div class="daily-log-list" id="dlLog"><div style="color:var(--text3);font-size:12px;">No entries today.</div></div>
+      </div>
+
+      <!-- Daily Status -->
+      <div class="glass-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;">
+        <div class="res-label">Today's Total P&amp;L</div>
+        <div class="big-stat" id="dlTotal">$0</div>
+        <div style="font-size:12px;color:var(--text3);" id="dlPct">0.00% of account</div>
+        <div class="progress-bar-wrap" style="width:100%">
+          <div class="pb-meta"><span class="pb-label">Limit Used</span><span class="pb-val" id="dlBarPct">0%</span></div>
+          <div class="pb-track"><div class="pb-fill" id="dlBar" style="width:0%"></div></div>
+        </div>
+        <div class="note-box" id="dlNote" style="width:100%;text-align:left;">No trades yet. Daily limit safe. ✓</div>
+      </div>
+
+      <!-- Phase Progress -->
+      <div class="glass-card">
+        <div class="card-label">Bootcamp Phase Progress</div>
+        <div class="field-row">
+          <div class="field"><label>Account ($)</label><input type="number" id="ph-acc" value="20000"/></div>
+          <div class="field"><label>Phase</label><select id="ph-ph"><option>1</option><option>2</option><option>3</option></select></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Target (%)</label><input type="number" id="ph-tgt" value="6"/></div>
+          <div class="field"><label>Current P&amp;L ($)</label><input type="number" id="ph-pnl" placeholder="450"/></div>
+        </div>
+        <button class="mag-btn mag-btn-primary" style="width:100%;margin-top:4px;" onclick="updatePhase()">Update Progress</button>
+        <div class="progress-bar-wrap" style="margin-top:16px;">
+          <div class="pb-meta"><span class="pb-label">Profit Target</span><span class="pb-val" id="phProfVal">$0 / $1,200</span></div>
+          <div class="pb-track"><div class="pb-fill" id="phProfBar" style="width:0%"></div></div>
+        </div>
+        <div class="note-box" id="phNote" style="margin-top:8px;">Enter your P&amp;L to see progress.</div>
+      </div>
+
+      <!-- Trade Journal -->
+      <div class="glass-card">
+        <div class="card-label">Trade Journal (<span id="jCount">0</span>)</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="mag-btn mag-btn-secondary" style="padding:6px 12px;font-size:10px;" onclick="exportCSV()">📊 Export CSV</button>
+            <button class="mag-btn mag-btn-secondary" style="padding:6px 12px;font-size:10px;" onclick="importCSV()">📁 Import CSV</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="jStatsMini" style="font-size:10px;color:var(--text3);"></span>
+            <button class="mag-btn mag-btn-secondary" style="padding:6px 12px;font-size:10px;" onclick="clearJournal()">🗑 Clear</button>
+          </div>
+        </div>
+        <div id="jList" style="max-height:240px;overflow-y:auto;"></div>
+        <div id="jStats" style="margin-top:12px;"></div>
+      </div>
+
+    </div><!-- /dash-grid -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════════ -->
+<section id="testimonials">
+  <div class="section-header">
+    <div class="section-tag">⭐ Reviews</div>
+    <h2 class="section-h2">Traders <span class="grad-text">Love It</span></h2>
+  </div>
+  <div class="testimonial-wrap">
+    <div class="testimonial-track" id="testiTrack">
+      <div class="testimonial-slide">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Passed my The5ers $20K Bootcamp first attempt. The lot size popup saves me every session — no more mental math under pressure.</p>
+          <div class="testi-author"><div class="testi-avatar">R</div><div><div class="testi-name">Rahul M.</div><div class="testi-role">Funded Trader · Mumbai</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <p class="testi-text">The AI flagged my RR before I placed the trade. Saved my challenge from a terrible setup I thought was good. Incredible tool.</p>
+          <div class="testi-author"><div class="testi-avatar">K</div><div><div class="testi-name">Karan S.</div><div class="testi-role">Phase 2 · XAUUSD Trader</div></div></div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"</div>
+          <p class="testi-text">Daily tracker on my second monitor, calculator on my main screen. This is my entire risk management system now.</p>
+          <div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Ananya P.</div><div class="testi-role">Funded · The5ers</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-dots"><div class="dot active"></div></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">TradeGuard</div>
+  <div class="footer-copy">© 2026 TradeGuard · Built for prop traders · AI by Groq</div>
+  <div class="social-links">
+    <a class="social-link" title="Twitter">𝕏</a>
+    <a class="social-link" title="Discord">💬</a>
+    <a class="social-link" title="Telegram">✈️</a>
+  </div>
+</footer>
+
+<!-- App JS (load last so DOM is ready) -->
+<script src="app.js"></script>
+</body>
+<script src="app.js"></script>
+</html>
