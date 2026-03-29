@@ -7,14 +7,7 @@
 // ──────────────────────────────────────────────
 // CONFIG — API key will be fetched from Vercel
 // ──────────────────────────────────────────────
-/* ==============================================
-   TradeGuard — app.js
-================================================ */
-
-// ──────────────────────────────────────────────
-// CONFIG — API key (only ONE declaration!)
-// ──────────────────────────────────────────────
-let GROQ_API_KEY = null;  // ← THIS IS THE ONLY DECLARATION
+let GROQ_API_KEY = null;  // ← ONLY ONE DECLARATION
 
 // Fetch API key from Vercel environment
 async function fetchApiKey() {
@@ -36,8 +29,6 @@ async function fetchApiKey() {
     return false;
   }
 }
-
-// ... rest of your code continues
 
 // ──────────────────────────────────────────────
 // LOT SIZE FORMULA — EXPLAINED
