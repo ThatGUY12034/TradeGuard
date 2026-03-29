@@ -7,38 +7,37 @@
 // ──────────────────────────────────────────────
 // CONFIG — API key will be fetched from Vercel
 // ──────────────────────────────────────────────
-let GROQ_API_KEY = null; // Initialize as null, will be fetched
+/* ==============================================
+   TradeGuard — app.js
+================================================ */
 
-// Fetch API key from Vercel environment (secure)
+// ──────────────────────────────────────────────
+// CONFIG — API key (only ONE declaration!)
+// ──────────────────────────────────────────────
+let GROQ_API_KEY = null;  // ← THIS IS THE ONLY DECLARATION
+
+// Fetch API key from Vercel environment
 async function fetchApiKey() {
   try {
     const response = await fetch('/api/config');
-    
-    // Check if response is OK
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     
-    if (data.GROQ_API_KEY && data.GROQ_API_KEY !== "YOUR_LOCAL_TEST_KEY_HERE") {
+    if (data.GROQ_API_KEY) {
       GROQ_API_KEY = data.GROQ_API_KEY;
-      console.log('✅ API key loaded from environment');
+      console.log('✅ API key loaded from Vercel');
       return true;
     } else {
-      console.warn('⚠️ No valid API key found, using fallback for local testing');
-      // For local development, you can set a test key here
-      GROQ_API_KEY = null; // Will show warning when AI is used
+      console.warn('⚠️ No API key found in Vercel');
       return false;
     }
   } catch (error) {
     console.warn('⚠️ Could not fetch API key:', error.message);
-    console.warn('💡 Make sure you have an API endpoint at /api/config');
-    console.warn('💡 For local development, create a local-config.js file');
-    GROQ_API_KEY = null;
     return false;
   }
 }
+
+// ... rest of your code continues
 
 // ──────────────────────────────────────────────
 // LOT SIZE FORMULA — EXPLAINED
