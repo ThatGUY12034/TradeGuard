@@ -3,54 +3,41 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TradeGuard — Prop Firm Risk Calculator</title>
-
-<!-- Fonts -->
+<title>TradeGuard — GFT PRO 5K 2-Step Edition</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet"/>
-
-<!-- Styles -->
 <link rel="stylesheet" href="styles.css"/>
-
-<!-- Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
 </head>
 <body>
 
-<!-- ─── LOADER ─────────────────────────────── -->
+<!-- LOADER -->
 <div id="loader">
   <div class="loader-logo">TradeGuard</div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-  <div class="loader-text">Initializing Systems</div>
+  <div class="loader-text">GFT PRO 5K — Loading Systems</div>
 </div>
 
-<!-- ─── CURSOR ─────────────────────────────── -->
+<!-- CURSOR -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- ─── THREE.JS CANVAS ─────────────────────── -->
+<!-- THREE.JS CANVAS -->
 <canvas id="bg-canvas"></canvas>
 
-<!-- ─── RESULT POPUP ─────────────────────────
-     Opens automatically after every calculation
-─────────────────────────────────────────────── -->
+<!-- RESULT POPUP -->
 <div class="popup-overlay" id="resultPopup">
   <div class="popup-box">
     <button class="popup-close" onclick="closePopup()">✕</button>
     <div class="popup-title">YOUR POSITION</div>
-    <div class="popup-subtitle">Required lot size for this trade</div>
-
-    <!-- Big lot number -->
+    <div class="popup-subtitle">GFT PRO 5K — Lot size for this trade</div>
     <div class="popup-main">
       <div class="popup-lot-label">⚡ Lot Size to Trade</div>
       <div class="popup-lot-value" id="popup-lot-val">—</div>
       <div class="popup-lot-unit"  id="popup-lot-unit">LOTS</div>
     </div>
-
-    <!-- Breakdown grid -->
     <div class="popup-breakdown">
       <div class="popup-stat">
         <div class="popup-stat-label">$ at Risk</div>
@@ -69,16 +56,8 @@
         <div class="popup-stat-val" id="popup-sl-pips">—</div>
       </div>
     </div>
-
-    <!-- Rule alert -->
-    <div class="popup-rule-alert pass" id="popup-rule-alert">Checking rules…</div>
-
-    <!-- Formula explanation -->
-    <div class="popup-formula" id="popup-formula">
-      Formula: Risk ($) ÷ (SL distance × contract size) = lot size
-    </div>
-
-    <!-- Actions -->
+    <div class="popup-rule-alert pass" id="popup-rule-alert">Checking GFT PRO rules…</div>
+    <div class="popup-formula" id="popup-formula">Formula: Risk ($) ÷ (SL distance × contract size) = lot size</div>
     <div class="popup-actions">
       <button class="mag-btn mag-btn-primary"   onclick="logThisTrade(); closePopup();">+ Log Trade</button>
       <button class="mag-btn mag-btn-secondary" onclick="closePopup()">Close</button>
@@ -86,24 +65,25 @@
   </div>
 </div>
 
-<!-- ─── MOBILE NAV ───────────────────────────── -->
+<!-- MOBILE NAV -->
 <div class="nav-mobile" id="mobileNav">
-  <a href="#calculator" onclick="closeMobileNav()">Calculator</a>
-  <a href="#features"   onclick="closeMobileNav()">Features</a>
-  <a href="#dashboard"  onclick="closeMobileNav()">Dashboard</a>
-  <a href="#testimonials" onclick="closeMobileNav()">Reviews</a>
+  <a href="#calculator"  onclick="closeMobileNav()">Calculator</a>
+  <a href="#challenge"   onclick="closeMobileNav()">Challenge</a>
+  <a href="#dashboard"   onclick="closeMobileNav()">Dashboard</a>
+  <a href="#features"    onclick="closeMobileNav()">Features</a>
 </div>
 
-<!-- ─── NAVBAR ──────────────────────────────── -->
+<!-- NAVBAR -->
 <nav id="navbar">
   <a href="#hero" class="nav-logo">TradeGuard</a>
   <ul class="nav-links">
     <li><a href="#calculator">Calculator</a></li>
-    <li><a href="#features">Features</a></li>
+    <li><a href="#challenge">Challenge</a></li>
     <li><a href="#dashboard">Dashboard</a></li>
-    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#features">Features</a></li>
   </ul>
   <div class="nav-right">
+    <div class="gft-badge-nav">🐐 GFT PRO 5K</div>
     <button class="theme-toggle" id="themeToggle" title="Toggle theme"></button>
     <div class="hamburger" id="hamburger" onclick="toggleMobileNav()">
       <span></span><span></span><span></span>
@@ -111,20 +91,18 @@
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════
-     HERO
-════════════════════════════════════════════ -->
+<!-- ═══ HERO ═══ -->
 <section id="hero">
-  <div class="hero-badge"><span class="badge-dot"></span> The5ers $20K Bootcamp Ready</div>
+  <div class="hero-badge"><span class="badge-dot"></span> GFT PRO 5K 2-Step Challenge Edition</div>
   <h1 class="hero-h1">
     <span class="line"><span>TRADE</span></span>
     <span class="line"><span class="grad-text">SMARTER</span></span>
     <span class="line"><span>WIN FUNDED</span></span>
   </h1>
-  <p class="hero-sub">The most advanced prop firm risk calculator. Powered by Groq AI. Enter your levels — get exact lot size instantly.</p>
+  <p class="hero-sub">Built specifically for GFT PRO $5K traders. 0.75% risk, Goat Guard protection, phase tracking. Get your exact lot size instantly.</p>
   <div class="hero-cta">
-    <a href="#calculator" class="mag-btn mag-btn-primary">Start Calculating</a>
-    <a href="#features"   class="mag-btn mag-btn-secondary">Explore Features</a>
+    <a href="#calculator" class="mag-btn mag-btn-primary">⚡ Calculate Lots</a>
+    <a href="#challenge"  class="mag-btn mag-btn-secondary">🐐 View Rules</a>
   </div>
   <div class="scroll-hint">
     <span>Scroll</span>
@@ -132,48 +110,79 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     STATS
-════════════════════════════════════════════ -->
+<!-- ═══ STATS — GFT PRO NUMBERS ═══ -->
 <section id="stats">
-  <div class="stat-item"><div class="stat-num" data-target="20">0</div><div class="stat-label">Account Size ($K)</div></div>
-  <div class="stat-item"><div class="stat-num" data-target="6">0</div><div class="stat-label">Profit Target (%)</div></div>
-  <div class="stat-item"><div class="stat-num" data-target="5">0</div><div class="stat-label">Max Drawdown (%)</div></div>
-  <div class="stat-item"><div class="stat-num" data-target="2">0</div><div class="stat-label">Max Risk/Trade (%)</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="5">0</div><div class="stat-label">Account Size ($K)</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="8">0</div><div class="stat-label">Phase 1 Target (%)</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="4">0</div><div class="stat-label">Phase 2 Target (%)</div></div>
+  <div class="stat-item"><div class="stat-num" data-target="8">0</div><div class="stat-label">Max Drawdown (%)</div></div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     CALCULATOR
-════════════════════════════════════════════ -->
+<!-- ═══ GFT PRO CHALLENGE RULES CARD ═══ -->
+<section id="challenge">
+  <div class="challenge-inner">
+    <div class="section-header">
+      <div class="section-tag">🐐 Your Challenge</div>
+      <h2 class="section-h2">GFT PRO <span class="grad-text">5K Rules</span></h2>
+      <p class="section-sub">All limits pre-loaded. Every calculation respects these exact rules.</p>
+    </div>
+    <div class="glass-card" id="challengeSummary">
+      <!-- populated by renderChallengeSummary() -->
+    </div>
+
+    <!-- KEY RULES CALLOUTS -->
+    <div class="rules-grid">
+      <div class="rule-callout warn">
+        <div class="rc-icon">⚡</div>
+        <div class="rc-title">Goat Guard — $100 Float</div>
+        <div class="rc-desc">On funded accounts, if floating loss hits $100 (2%), your trade auto-closes. First trigger → split drops to 50%. Second trigger → account breached. Always use SL under $100 risk.</div>
+      </div>
+      <div class="rule-callout danger">
+        <div class="rc-icon">🚨</div>
+        <div class="rc-title">5% Daily = $250 Max Loss</div>
+        <div class="rc-desc">Hit -$250 in a single day and GFT breaches your account. At 0.75% risk ($37.50/trade), you get 6 losing trades before the daily limit. Never trade revenge after 3 losses.</div>
+      </div>
+      <div class="rule-callout info">
+        <div class="rc-icon">📰</div>
+        <div class="rc-title">News Profit Cap — 1%</div>
+        <div class="rc-desc">Any trade opened/closed within 5 minutes of a high-impact news event can only generate max 1% profit ($50). Excess profit gets removed. Always check the economic calendar.</div>
+      </div>
+      <div class="rule-callout pass">
+        <div class="rc-icon">🏆</div>
+        <div class="rc-title">First Payout Cap — $240</div>
+        <div class="rc-desc">First 2 payouts are capped at 6% of $5K = $300 max profit. Your 80% split = $240 per payout. After 2nd payout, no cap. Fee refunded on 4th payout.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CALCULATOR ═══ -->
 <section id="calculator">
   <div class="section-header">
     <div class="section-tag">⚡ Core Tool</div>
     <h2 class="section-h2">Risk <span class="grad-text">Calculator</span></h2>
-    <p class="section-sub">Enter your entry, stop loss and take profit prices. Correct lot size pops up instantly.</p>
+    <p class="section-sub">Pre-set to GFT PRO $5K · 0.75% risk. Enter your levels — lot size pops up instantly.</p>
   </div>
 
   <div class="calc-grid">
-
     <!-- INPUT CARD -->
     <div class="glass-card tilt-card" id="calcInputCard">
-      <div class="card-label">Trade Setup</div>
-
+      <div class="card-label">Trade Setup — GFT PRO 5K</div>
       <div class="field">
         <label>Pair / Instrument</label>
         <input type="text" id="c-pair" placeholder="EURUSD, XAUUSD, BTC, US30…"/>
       </div>
-
       <div class="field-row">
         <div class="field">
           <label>Account Size ($)</label>
-          <input type="number" id="c-account" value="20000"/>
+          <input type="number" id="c-account" value="5000"/>
         </div>
         <div class="field">
           <label>Risk per Trade (%)</label>
-          <input type="number" id="c-risk" value="1" step="0.1" max="2"/>
+          <input type="number" id="c-risk" value="0.75" step="0.05" max="2"/>
+          <small>0.75% = $37.50 recommended</small>
         </div>
       </div>
-
       <div class="field-row">
         <div class="field">
           <label>Entry Price</label>
@@ -186,7 +195,6 @@
           <small>Where you exit if wrong</small>
         </div>
       </div>
-
       <div class="field-row">
         <div class="field">
           <label>Take Profit Price</label>
@@ -201,14 +209,12 @@
           </select>
         </div>
       </div>
-
       <div class="field">
         <label>Trade Notes (optional)</label>
-        <input type="text" id="c-notes" placeholder="Setup description, session, confluence…"/>
+        <input type="text" id="c-notes" placeholder="Setup, session, confluence, phase target…"/>
       </div>
-
-      <div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">
-        <button class="mag-btn mag-btn-primary"   onclick="doCalc()"       style="flex:1">⚡ Calculate &amp; Show Lots</button>
+      <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
+        <button class="mag-btn mag-btn-primary"   onclick="doCalc()"       style="flex:1">⚡ Calculate Lots</button>
         <button class="mag-btn mag-btn-secondary" onclick="resetCalc()">↺</button>
         <button class="mag-btn mag-btn-secondary" onclick="logThisTrade()" style="flex:1">+ Log Trade</button>
       </div>
@@ -233,8 +239,7 @@
           <div class="res-sub" id="r-tp-pips"></div>
         </div>
       </div>
-
-      <div class="card-label" style="margin-top:8px;">The5ers Rule Check</div>
+      <div class="card-label" style="margin-top:8px;">🐐 GFT PRO Rule Check</div>
       <div class="rule-list" id="ruleList">
         <div class="rule-row" style="color:var(--text3)">⬜ &nbsp;Enter trade details and calculate</div>
       </div>
@@ -242,7 +247,7 @@
 
     <!-- AI PANEL -->
     <div class="glass-card ai-panel">
-      <div class="card-label">✦ AI Analysis — Groq (Free)</div>
+      <div class="card-label">✦ AI Analysis — GFT PRO Context</div>
       <div class="model-row">
         <label>Model</label>
         <select id="aiModel">
@@ -258,61 +263,14 @@
       <div class="ai-output-wrap" id="aiOut">
         <div class="ai-header"><span class="ai-dot"></span>Awaiting Trade Data</div>
         <div class="ai-content" style="color:var(--text3);font-size:12px;">
-          Calculate a trade above, then click AI Analyze for a full professional evaluation — quality score, prop firm compliance, and recommendations.
+          Calculate a trade above, then click AI Analyze for a full GFT PRO $5K evaluation — quality score, Goat Guard risk, phase impact, and specific recommendations.
         </div>
-      </div>
-    </div>
-
-  </div><!-- /calc-grid -->
-</section>
-
-<!-- ═══════════════════════════════════════════
-     FEATURES
-════════════════════════════════════════════ -->
-<section id="features">
-  <div class="features-inner">
-    <div class="section-header">
-      <div class="section-tag">🔥 What's Inside</div>
-      <h2 class="section-h2">Every Tool You <span class="grad-text">Need</span></h2>
-    </div>
-    <div class="features-grid">
-      <div class="glass-card feat-card tilt-card">
-        <div class="feat-icon blue">⚡</div>
-        <h3 class="feat-h3">Instant Lot Size</h3>
-        <p class="feat-p">Enter entry, SL, TP prices — get your exact lot size in a popup instantly. Works for Forex, Gold, Crypto &amp; Indices.</p>
-      </div>
-      <div class="glass-card feat-card tilt-card">
-        <div class="feat-icon purple">🤖</div>
-        <h3 class="feat-h3">Groq AI Evaluation</h3>
-        <p class="feat-p">Free AI analysis of every trade. Quality score, risk check, prop firm compliance, and specific recommendations.</p>
-      </div>
-      <div class="glass-card feat-card tilt-card">
-        <div class="feat-icon green">✅</div>
-        <h3 class="feat-h3">Rule Checker</h3>
-        <p class="feat-p">Auto-validates against The5ers $20K rules. Warns you before breaching the 2% limit or placing a bad direction trade.</p>
-      </div>
-      <div class="glass-card feat-card tilt-card">
-        <div class="feat-icon pink">📉</div>
-        <h3 class="feat-h3">Daily Tracker</h3>
-        <p class="feat-p">Track intraday P&amp;L vs your 5% daily limit. Color-coded warnings at 50%, 80%, and 100% of limit.</p>
-      </div>
-      <div class="glass-card feat-card tilt-card">
-        <div class="feat-icon orange">🎯</div>
-        <h3 class="feat-h3">Phase Progress</h3>
-        <p class="feat-p">Visual tracker for the 6% profit target across all 3 Bootcamp phases. Know exactly what you still need.</p>
-      </div>
-      <div class="glass-card feat-card tilt-card">
-        <div class="feat-icon cyan">📒</div>
-        <h3 class="feat-h3">Trade Journal</h3>
-        <p class="feat-p">Log, review, and export every trade. Stats: win rate, average RR, total risk. Persists between sessions.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     DASHBOARD
-════════════════════════════════════════════ -->
+<!-- ═══ DASHBOARD ═══ -->
 <section id="dashboard">
   <div class="dashboard-inner">
     <div class="section-header">
@@ -322,15 +280,15 @@
 
     <div class="dash-grid">
 
-      <!-- Daily Tracker Input -->
+      <!-- Daily Tracker -->
       <div class="glass-card">
-        <div class="card-label">Daily P&amp;L Tracker</div>
+        <div class="card-label">Daily P&amp;L Tracker — 5% = $250 Limit</div>
         <div class="field-row">
-          <div class="field"><label>Account ($)</label><input type="number" id="dl-acc" value="20000"/></div>
+          <div class="field"><label>Account ($)</label><input type="number" id="dl-acc" value="5000"/></div>
           <div class="field"><label>Daily Limit (%)</label><input type="number" id="dl-lim" value="5"/></div>
         </div>
         <div class="field-row">
-          <div class="field"><label>Add P&amp;L ($)</label><input type="number" id="dl-amt" placeholder="-100 or +200"/></div>
+          <div class="field"><label>Add P&amp;L ($)</label><input type="number" id="dl-amt" placeholder="-37.50 or +75"/></div>
           <div class="field" style="display:flex;align-items:flex-end;gap:8px;">
             <button class="mag-btn mag-btn-primary"   style="flex:1;padding:12px" onclick="addPnL()">Add</button>
             <button class="mag-btn mag-btn-secondary" style="padding:12px"        onclick="resetPnL()">↺</button>
@@ -345,29 +303,36 @@
         <div class="big-stat" id="dlTotal">$0</div>
         <div style="font-size:12px;color:var(--text3);" id="dlPct">0.00% of account</div>
         <div class="progress-bar-wrap" style="width:100%">
-          <div class="pb-meta"><span class="pb-label">Limit Used</span><span class="pb-val" id="dlBarPct">0%</span></div>
+          <div class="pb-meta"><span class="pb-label">Daily Limit Used</span><span class="pb-val" id="dlBarPct">0%</span></div>
           <div class="pb-track"><div class="pb-fill" id="dlBar" style="width:0%"></div></div>
         </div>
         <div class="note-box" id="dlNote" style="width:100%;text-align:left;">No trades yet. Daily limit safe. ✓</div>
       </div>
 
-      <!-- Phase Progress -->
+      <!-- Phase Progress — GFT PRO -->
       <div class="glass-card">
-        <div class="card-label">Bootcamp Phase Progress</div>
+        <div class="card-label">GFT PRO Phase Progress</div>
         <div class="field-row">
-          <div class="field"><label>Account ($)</label><input type="number" id="ph-acc" value="20000"/></div>
-          <div class="field"><label>Phase</label><select id="ph-ph"><option>1</option><option>2</option><option>3</option></select></div>
+          <div class="field"><label>Account ($)</label><input type="number" id="ph-acc" value="5000"/></div>
+          <div class="field">
+            <label>Phase</label>
+            <select id="ph-ph" onchange="updatePhase()">
+              <option value="1">Phase 1 — 8% ($400)</option>
+              <option value="2">Phase 2 — 4% ($200)</option>
+            </select>
+          </div>
         </div>
-        <div class="field-row">
-          <div class="field"><label>Target (%)</label><input type="number" id="ph-tgt" value="6"/></div>
-          <div class="field"><label>Current P&amp;L ($)</label><input type="number" id="ph-pnl" placeholder="450"/></div>
+        <div class="field">
+          <label>Current Phase P&amp;L ($) — <span id="ph-tgt-display">8% ($400)</span></label>
+          <input type="number" id="ph-pnl" placeholder="e.g. 150"/>
         </div>
         <button class="mag-btn mag-btn-primary" style="width:100%;margin-top:4px;" onclick="updatePhase()">Update Progress</button>
         <div class="progress-bar-wrap" style="margin-top:16px;">
-          <div class="pb-meta"><span class="pb-label">Profit Target</span><span class="pb-val" id="phProfVal">$0 / $1,200</span></div>
+          <div class="pb-meta"><span class="pb-label">Phase Target</span><span class="pb-val" id="phProfVal">$0 / $400</span></div>
           <div class="pb-track"><div class="pb-fill" id="phProfBar" style="width:0%"></div></div>
         </div>
-        <div class="note-box" id="phNote" style="margin-top:8px;">Enter your P&amp;L to see progress.</div>
+        <div class="note-box" id="phNote" style="margin-top:8px;">Select phase and enter P&amp;L to see progress.</div>
+        <div style="font-size:11px;color:var(--accent);margin-top:8px;" id="ph-payout"></div>
       </div>
 
       <!-- Trade Journal -->
@@ -383,55 +348,60 @@
             <button class="mag-btn mag-btn-secondary" style="padding:6px 12px;font-size:10px;" onclick="clearJournal()">🗑 Clear</button>
           </div>
         </div>
-        <div id="jList" style="max-height:240px;overflow-y:auto;"></div>
+        <div id="jList" style="max-height:260px;overflow-y:auto;"></div>
         <div id="jStats" style="margin-top:12px;"></div>
       </div>
 
-    </div><!-- /dash-grid -->
+    </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     TESTIMONIALS
-════════════════════════════════════════════ -->
-<section id="testimonials">
-  <div class="section-header">
-    <div class="section-tag">⭐ Reviews</div>
-    <h2 class="section-h2">Traders <span class="grad-text">Love It</span></h2>
-  </div>
-  <div class="testimonial-wrap">
-    <div class="testimonial-track" id="testiTrack">
-      <div class="testimonial-slide">
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <div class="testi-quote">"</div>
-          <p class="testi-text">Passed my The5ers $20K Bootcamp first attempt. The lot size popup saves me every session — no more mental math under pressure.</p>
-          <div class="testi-author"><div class="testi-avatar">R</div><div><div class="testi-name">Rahul M.</div><div class="testi-role">Funded Trader · Mumbai</div></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <div class="testi-quote">"</div>
-          <p class="testi-text">The AI flagged my RR before I placed the trade. Saved my challenge from a terrible setup I thought was good. Incredible tool.</p>
-          <div class="testi-author"><div class="testi-avatar">K</div><div><div class="testi-name">Karan S.</div><div class="testi-role">Phase 2 · XAUUSD Trader</div></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">★★★★★</div>
-          <div class="testi-quote">"</div>
-          <p class="testi-text">Daily tracker on my second monitor, calculator on my main screen. This is my entire risk management system now.</p>
-          <div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">Ananya P.</div><div class="testi-role">Funded · The5ers</div></div></div>
-        </div>
+<!-- ═══ FEATURES ═══ -->
+<section id="features">
+  <div class="features-inner">
+    <div class="section-header">
+      <div class="section-tag">🔥 What's Inside</div>
+      <h2 class="section-h2">Every Tool You <span class="grad-text">Need</span></h2>
+    </div>
+    <div class="features-grid">
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon blue">⚡</div>
+        <h3 class="feat-h3">Instant Lot Size</h3>
+        <p class="feat-p">Enter entry, SL, TP — get exact lots in a popup. Pre-set to 0.75% risk on $5K. Works for Forex, Gold, Crypto &amp; Indices.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon purple">🤖</div>
+        <h3 class="feat-h3">GFT PRO AI Analysis</h3>
+        <p class="feat-p">AI evaluation with full GFT PRO context — Goat Guard risk, phase impact, daily DD analysis, and $5K-specific recommendations.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon green">✅</div>
+        <h3 class="feat-h3">6-Point Rule Check</h3>
+        <p class="feat-p">Auto-validates: SL/TP direction, risk %, R:R, Goat Guard float limit, losses-till-max-DD, and losses-till-daily-breach.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon pink">📉</div>
+        <h3 class="feat-h3">Daily Tracker</div>
+        <p class="feat-p">Track intraday P&amp;L vs the 5% ($250) GFT daily limit. Color-coded warnings at 50%, 80%, and 100% of limit.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon orange">🎯</div>
+        <h3 class="feat-h3">Phase Progress</h3>
+        <p class="feat-p">Separate Phase 1 (8%/$400) and Phase 2 (4%/$200) trackers. See exactly how many wins you need to pass and payout estimate.</p>
+      </div>
+      <div class="glass-card feat-card tilt-card">
+        <div class="feat-icon cyan">📒</div>
+        <h3 class="feat-h3">Trade Journal</h3>
+        <p class="feat-p">Log trades with WIN/LOSS/BE outcomes. Auto-updates daily tracker and phase progress. Export to CSV. Persists between sessions.</p>
       </div>
     </div>
   </div>
-  <div class="carousel-dots"><div class="dot active"></div></div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     FOOTER
-════════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-logo">TradeGuard</div>
-  <div class="footer-copy">© 2026 TradeGuard · Built for prop traders · AI by Groq</div>
+  <div class="footer-copy">© 2026 TradeGuard · GFT PRO 5K Edition · AI by Groq</div>
   <div class="social-links">
     <a class="social-link" title="Twitter">𝕏</a>
     <a class="social-link" title="Discord">💬</a>
@@ -439,8 +409,6 @@
   </div>
 </footer>
 
-<!-- App JS (load last so DOM is ready) -->
 <script src="app.js"></script>
 </body>
-<script src="app.js"></script>
 </html>
